@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+import Card from "../../components/card/Card";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
@@ -8,13 +9,20 @@ export default function Home() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("localhost:3004/api/users/");
-        console.log(res);
+        const res = await axios.get("http://localhost:3004/api/users/");
+        setUsers(res.data);
+        console.log(users);
       } catch (err) {
         console.log(err);
       }
     };
     fetchUsers();
   }, []);
-  return <div>Home</div>;
+  return (
+    <div className='flex flex-row justify-center'>
+      {users.map((u) => {
+        return <Card user={u} key={u._id} />;
+      })}
+    </div>
+  );
 }
