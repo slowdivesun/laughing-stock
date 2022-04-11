@@ -1,11 +1,23 @@
+import { useContext } from "react";
 import { useRef } from "react";
+import { loginCall } from "../../apiCalls";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Login() {
   const email = useRef();
   const password = useRef();
+
+  const { user, isFetching, error, dispatch } = useContext(AuthContext);
+
   const onSubmit = (e) => {
     e.preventDefault();
+    loginCall(
+      { email: email.current.value, password: password.current.value },
+      dispatch
+    );
   };
+
+  console.log(user);
   return (
     <div className='login flex w-[100vw] h-[80vw] items-center justify-center'>
       <form

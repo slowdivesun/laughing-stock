@@ -2,16 +2,15 @@ const express = require("express");
 const router = express.Router();
 const User = require("../../models/User");
 const { check, validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
 const bcrypt = require("bcryptjs/dist/bcrypt");
 
 // register
 router.post("/register", async (req, res) => {
   try {
-    const salt = bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-    const newUser = await new User({
+    const newUser = new User({
       name: req.body.name,
       email: req.body.email,
       password: hashedPassword,
@@ -20,6 +19,7 @@ router.post("/register", async (req, res) => {
     const user = await newUser.save();
     res.status(200).send(user);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
@@ -27,6 +27,7 @@ router.post("/register", async (req, res) => {
 //Login
 router.post("/login", async (req, res) => {
   try {
+    console.log(req.body.email);
     const user = await User.findOne({ email: req.body.email });
     !user && res.status(404).send("User not found");
 

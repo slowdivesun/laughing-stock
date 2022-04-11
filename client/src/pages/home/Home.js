@@ -19,7 +19,7 @@ export default function Home() {
     fetchUsers();
   }, []);
   return (
-    <div className='flex flex-row justify-center'>
+    <div className='flex flex-row justify-center flex-wrap'>
       {users.map((u) => {
         return <Card user={u} key={u._id} />;
       })}
