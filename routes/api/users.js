@@ -16,4 +16,17 @@ router.get("/", async (req, res) => {
   }
 });
 
+// get user by id
+router.get("/:userId", async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    const user = await User.findById(userId);
+    const { password, ...other } = user._doc;
+    res.status(200).json(other);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

@@ -6,13 +6,41 @@ import Conversation from "../../components/conversations/Conversation";
 import Message from "../../components/message/Message";
 import Topbar from "../../components/topbar/Topbar";
 import { AuthContext } from "../../context/AuthContext";
+import { io } from "socket.io-client";
+import { useRef } from "react";
 
 export default function Messenger() {
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const socket = useRef();
   const { user } = useContext(AuthContext);
+  const scrollRef = useRef();
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:3005");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+      });
+    });
+  }, []);
+  console.log(arrivalMessage);
+  useEffect(() => {
+    arrivalMessage &&
+      currentChat?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
+
+  useEffect(() => {
+    socket.current.emit("addUser", user._id);
+    socket.current.on("getUsers", (users) => {
+      console.log(users);
+    });
+  }, [user]);
 
   useEffect(() => {
     const getConversations = async () => {
@@ -50,17 +78,32 @@ export default function Messenger() {
       conversationId: currentChat._id,
     };
 
+    const receiverId = currentChat.members.find(
+      (member) => member !== user._id
+    );
+
+    socket.current.emit("sendMessage", {
+      senderId: user._id,
+      receiverId,
+      text: newMessage,
+    });
+
     try {
       const res = await axios.post(
         "http://localhost:3004/api/messages",
         message
       );
-      console.log(res);
       setMessages([...messages, res.data]);
+      setNewMessage("");
     } catch (err) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <>
       <Topbar />
@@ -86,7 +129,13 @@ export default function Messenger() {
             <>
               <div className='chatBoxTop w-full flex flex-col h-[85%] overflow-scroll'>
                 {messages.map((m) => (
-                  <Message message={m} own={m.sender === user._id} />
+                  <div ref={scrollRef}>
+                    <Message
+                      message={m}
+                      own={m.sender === user._id}
+                      key={m._id}
+                    />
+                  </div>
                 ))}
               </div>
               <div className='chatBoxBotton flex flex-row items-center justify-around h-[10%] sticky bottom-3'>

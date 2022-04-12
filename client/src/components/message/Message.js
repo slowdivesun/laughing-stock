@@ -6,7 +6,7 @@ export default function Message({ message, own }) {
           ${own ? "text-black" : "text-white"}
          p-2 my-2 rounded-md w-fit max-w-[300px]`}
       >
-        {message.text}
+        {message?.text}
       </p>
     </div>
   );
