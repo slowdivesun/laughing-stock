@@ -7,7 +7,7 @@ export default function Login() {
   const email = useRef();
   const password = useRef();
 
-  const { user, isFetching, error, dispatch } = useContext(AuthContext);
+  const { isFetching, dispatch } = useContext(AuthContext);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -17,7 +17,6 @@ export default function Login() {
     );
   };
 
-  console.log(user);
   return (
     <div className='login flex w-[100vw] h-[80vw] items-center justify-center'>
       <form
