@@ -107,13 +107,13 @@ export default function Messenger() {
   return (
     <>
       <Topbar />
-      <div className='messenger h-[90vh] flex flex-row'>
-        <div className='chatMenu w-[40vw] p-3'>
-          <input
+      <div className='messenger h-[90vh] flex flex-col sm:flex-row'>
+        <div className='chatMenu w-[80vw] sm:w-[30vw] sm:h-[90vh] p-5 h-[30vh]  sm:border-r-2 sm:border-blue-300 overflow-scroll'>
+          {/* <input
             type='text'
             placeholder='Search for Friends'
             className='chatSearch w-full p-3 my-2 border-2 border-black'
-          />
+          /> */}
           {conversations.map((conversation) => (
             <div onClick={() => setCurrentChat(conversation)}>
               <Conversation
@@ -124,7 +124,7 @@ export default function Messenger() {
             </div>
           ))}
         </div>
-        <div className='chatBox flex-1'>
+        <div className='chatBox flex-1 h-[50vh] sm:h-[90vh]'>
           {currentChat ? (
             <>
               <div className='chatBoxTop w-full flex flex-col h-[85%] overflow-scroll'>
@@ -137,6 +137,13 @@ export default function Messenger() {
                     />
                   </div>
                 ))}
+                {messages.length === 0 ? (
+                  <div className='w-full h-full flex items-center justify-center text-xl text-gray-500'>
+                    Empty
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </div>
               <div className='chatBoxBotton flex flex-row items-center justify-around h-[10%] sticky bottom-3'>
                 <textarea
@@ -144,6 +151,7 @@ export default function Messenger() {
                   value={newMessage}
                   placeholder='Write Something'
                   className='chatInput w-[80%] p-3 border-2 border-black'
+                  required
                 ></textarea>
                 <button
                   onClick={handleSubmit}
