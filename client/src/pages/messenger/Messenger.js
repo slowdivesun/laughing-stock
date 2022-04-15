@@ -20,7 +20,7 @@ export default function Messenger() {
   const scrollRef = useRef();
 
   useEffect(() => {
-    socket.current = io("ws://localhost:3005");
+    socket.current = io("https://vercel.com/slowdivesun/laughing-stock-socket");
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
