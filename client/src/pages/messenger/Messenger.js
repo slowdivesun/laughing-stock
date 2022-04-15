@@ -46,7 +46,7 @@ export default function Messenger() {
     const getConversations = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3004/api/conversations/" + user._id
+          "https://laughing-stock-api.vercel.app/api/conversations/" + user._id
         );
         setConversations(res.data);
       } catch (err) {
@@ -60,7 +60,8 @@ export default function Messenger() {
     const getMessages = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3004/api/messages/" + currentChat._id
+          "https://laughing-stock-api.vercel.app/api/messages/" +
+            currentChat._id
         );
         setMessages(res.data);
       } catch (err) {
@@ -90,7 +91,7 @@ export default function Messenger() {
 
     try {
       const res = await axios.post(
-        "http://localhost:3004/api/messages",
+        "https://laughing-stock-api.vercel.app/api/messages",
         message
       );
       setMessages([...messages, res.data]);

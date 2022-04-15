@@ -1,6 +1,6 @@
 const io = require("socket.io")(3005, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://laughing-stock-api.vercel.app/",
   },
 });
 

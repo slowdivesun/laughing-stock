@@ -5,7 +5,7 @@ export const loginCall = async (credentials, dispatch) => {
 
   try {
     const res = await axios.post(
-      "http://localhost:3004/api/auth/login",
+      "https://laughing-stock-api.vercel.app/api/auth/login",
       credentials
     );
     dispatch({ type: "LOGIN_SUCCESS", payload: res.data });

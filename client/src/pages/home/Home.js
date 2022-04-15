@@ -16,7 +16,9 @@ export default function Home() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:3004/api/users/");
+        const res = await axios.get(
+          "https://laughing-stock-api.vercel.app/api//users/"
+        );
         setUsers(res.data);
       } catch (err) {
         console.log(err);
@@ -33,7 +35,7 @@ export default function Home() {
     };
     try {
       const res = await axios.post(
-        "http://localhost:3004/api/conversations/",
+        "https://laughing-stock-api.vercel.app/api//conversations/",
         req
       );
       setAlert(true);
