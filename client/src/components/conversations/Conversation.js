@@ -11,7 +11,7 @@ export default function Conversation({ conversation, currentUser }) {
     const getUser = async () => {
       try {
         const res = await axios.get(
-          "https://laughing-stock-api.vercel.app/users/" + friendId
+          "https://laughing-stock-api.vercel.app/api/users/" + friendId
         );
         setUser(res.data);
       } catch (err) {
